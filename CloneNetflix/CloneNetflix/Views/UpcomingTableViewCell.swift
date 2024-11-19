@@ -48,7 +48,12 @@ class UpcomingTableViewCell: UITableViewCell {
     
     func configure(with model: TitleModel){
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.imageString)") else {return}
-        titleImage.sd_setImage(with: url)
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data, let uiimage = UIImage(data: data) else {return}
+            DispatchQueue.main.async {
+                self.titleImage.image = uiimage
+            }
+        }.resume()
         titlelabel.text = model.title
     }
 }

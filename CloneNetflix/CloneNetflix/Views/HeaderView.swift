@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HeaderViewCollectionViewDelegate: AnyObject {
-    func headerCollectionViewItemDidTap(_ cell: HeaderView, viewModel: YoutubeModel)
+    func headerCollectionViewItemDidTap(viewModel: YoutubeModel)
 }
 
 class HeaderView: UIView {
@@ -93,7 +93,7 @@ extension HeaderView: UICollectionViewDelegate, UICollectionViewDataSource {
             switch result {
             case .success(let data):
                 let youtubeModel = YoutubeModel(title: title.original_title, overview: title.overview, youtubeLink: data.id.videoId)
-                self.delegate?.headerCollectionViewItemDidTap(self, viewModel: youtubeModel)
+                self.delegate?.headerCollectionViewItemDidTap(viewModel: youtubeModel)
             case .failure(let error):
                 print(error)
             }

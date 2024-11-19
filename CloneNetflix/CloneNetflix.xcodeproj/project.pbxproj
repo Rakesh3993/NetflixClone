@@ -25,8 +25,6 @@
 		7EAF17BA2C95AA69009F63FC /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17B92C95AA69009F63FC /* APICaller.swift */; };
 		7EAF17BC2C95AAEA009F63FC /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17BB2C95AAEA009F63FC /* TitleCollectionViewCell.swift */; };
 		7EAF17BF2C95AC71009F63FC /* TitleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17BE2C95AC71009F63FC /* TitleModel.swift */; };
-		7EAF17C22C95AD0C009F63FC /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7EAF17C12C95AD0C009F63FC /* SDWebImage */; };
-		7EAF17C42C95AD0C009F63FC /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7EAF17C32C95AD0C009F63FC /* SDWebImageMapKit */; };
 		7EAF17C62C95ADE6009F63FC /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17C52C95ADE6009F63FC /* Title.swift */; };
 		7EAF17C82C95BF69009F63FC /* UpcomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17C72C95BF69009F63FC /* UpcomingTableViewCell.swift */; };
 		7EAF17CA2C95CB5B009F63FC /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17C92C95CB5B009F63FC /* SearchResultViewController.swift */; };
@@ -96,8 +94,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EAF17C42C95AD0C009F63FC /* SDWebImageMapKit in Frameworks */,
-				7EAF17C22C95AD0C009F63FC /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,8 +249,6 @@
 			);
 			name = CloneNetflix;
 			packageProductDependencies = (
-				7EAF17C12C95AD0C009F63FC /* SDWebImage */,
-				7EAF17C32C95AD0C009F63FC /* SDWebImageMapKit */,
 			);
 			productName = CloneNetflix;
 			productReference = 7EAF17772C959355009F63FC /* CloneNetflix.app */;
@@ -329,7 +323,6 @@
 			);
 			mainGroup = 7EAF176E2C959355009F63FC;
 			packageReferences = (
-				7EAF17C02C95AD0C009F63FC /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 7EAF17782C959355009F63FC /* Products */;
 			projectDirPath = "";
@@ -736,30 +729,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		7EAF17C02C95AD0C009F63FC /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.19.7;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		7EAF17C12C95AD0C009F63FC /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7EAF17C02C95AD0C009F63FC /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImage;
-		};
-		7EAF17C32C95AD0C009F63FC /* SDWebImageMapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7EAF17C02C95AD0C009F63FC /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImageMapKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		7EAF18132C97176E009F63FC /* CloneNetflixModel.xcdatamodeld */ = {

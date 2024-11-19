@@ -182,7 +182,7 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
 }
 
 extension HomeViewController: HeaderViewCollectionViewDelegate {
-    func headerCollectionViewItemDidTap(_ cell: HeaderView, viewModel: YoutubeModel) {
+    func headerCollectionViewItemDidTap(viewModel: YoutubeModel) {
         DispatchQueue.main.async { [weak self] in
             let vc = ResultViewController()
             vc.configure(with: viewModel)

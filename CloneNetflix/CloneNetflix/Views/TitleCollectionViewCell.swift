@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SDWebImage
+import Foundation
 
 class TitleCollectionViewCell: UICollectionViewCell {
     static let identifier = "TitleCollectionViewCell"
@@ -41,6 +41,11 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     func configure(with model: TitleModel){
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.imageString)") else {return}
-        titleImageView.sd_setImage(with: url)
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data, let uiimage = UIImage(data: data) else {return}
+            DispatchQueue.main.async {
+                self.titleImageView.image = uiimage
+            }
+        }.resume()
     }
 }
