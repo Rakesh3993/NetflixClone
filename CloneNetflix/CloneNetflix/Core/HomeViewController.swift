@@ -19,10 +19,10 @@ class HomeViewController: UIViewController {
     
     var titleArray: [Title] = [Title]()
     
-    let sectionTitles = ["Trending Movies", "Trending TV", "Popular", "Upcoming", "Top Rated"]
-    let headerView: HeaderView = HeaderView()
+    private let sectionTitles = ["Trending Movies", "Trending TV", "Popular", "Upcoming", "Top Rated"]
+    private let headerView: HeaderView = HeaderView()
     
-    private var homeTableView: UITableView = {
+    private lazy var homeTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
         return tableView
     }()
     
-    private var refreshControl: UIRefreshControl = {
+    private lazy var refreshControl: UIRefreshControl = {
         let control = UIRefreshControl()
         control.attributedTitle = NSAttributedString(string: "loading")
         control.addTarget(self, action: #selector(pullDownToRefresh), for: .valueChanged)
@@ -46,7 +46,7 @@ class HomeViewController: UIViewController {
         headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 500)
         homeTableView.tableHeaderView = headerView
         homeTableView.refreshControl = refreshControl
-        setHeaderView()
+        headerView.delegate = self
         fetchMovieData()
         constraints()
     }
@@ -65,6 +65,11 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let title):
                 self.titleArray = title
+                self.headerView.titleArray = title
+                DispatchQueue.main.async {
+                    self.headerView.autoScroll()
+                    self.headerView.headerCollectionView.reloadData()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -74,19 +79,6 @@ class HomeViewController: UIViewController {
     @objc func pullDownToRefresh(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 2){
             self.refreshControl.endRefreshing()
-        }
-    }
-    
-    private func setHeaderView(){
-        APICaller.shared.fetchData { result in
-            switch result {
-            case .success(let title):
-                let randomString = title.randomElement()
-                let titleName = randomString?.original_title ?? ""
-                self.headerView.configure(with: TitleModel(imageString: randomString?.poster_path ?? "", title:randomString?.original_title ?? ""))
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
         }
     }
 }
@@ -182,6 +174,16 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeViewController: CollectionViewTableViewCellDelegate {
     func CollectionViewTableViewCellDidTapItem(_ cell: CollectionViewTableViewCell, viewModel: YoutubeModel) {
         DispatchQueue.main.async {[weak self] in
+            let vc = ResultViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension HomeViewController: HeaderViewCollectionViewDelegate {
+    func headerCollectionViewItemDidTap(_ cell: HeaderView, viewModel: YoutubeModel) {
+        DispatchQueue.main.async { [weak self] in
             let vc = ResultViewController()
             vc.configure(with: viewModel)
             self?.navigationController?.pushViewController(vc, animated: true)

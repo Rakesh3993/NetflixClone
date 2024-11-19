@@ -36,6 +36,7 @@
 		7EAF17D32C960F00009F63FC /* YoutubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF17D22C960F00009F63FC /* YoutubeModel.swift */; };
 		7EAF18152C97176E009F63FC /* CloneNetflixModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF18132C97176E009F63FC /* CloneNetflixModel.xcdatamodeld */; };
 		7EAF18172C971A2B009F63FC /* DataPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF18162C971A2B009F63FC /* DataPersistenceManager.swift */; };
+		7EF7FDFB2CEC73E7000F9C1E /* HeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7FDFA2CEC73DE000F9C1E /* HeaderCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		7EAF17D22C960F00009F63FC /* YoutubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeModel.swift; sourceTree = "<group>"; };
 		7EAF18142C97176E009F63FC /* CloneNetflixModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CloneNetflixModel.xcdatamodel; sourceTree = "<group>"; };
 		7EAF18162C971A2B009F63FC /* DataPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceManager.swift; sourceTree = "<group>"; };
+		7EF7FDFA2CEC73DE000F9C1E /* HeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 		7EAF17B32C959C04009F63FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7EF7FDFA2CEC73DE000F9C1E /* HeaderCollectionView.swift */,
 				7EAF17B42C959C36009F63FC /* CollectionViewTableViewCell.swift */,
 				7EAF17B62C95A75A009F63FC /* HeaderView.swift */,
 				7EAF17BB2C95AAEA009F63FC /* TitleCollectionViewCell.swift */,
@@ -386,6 +389,7 @@
 				7EAF17BC2C95AAEA009F63FC /* TitleCollectionViewCell.swift in Sources */,
 				7EAF17D12C960D61009F63FC /* YouTubeResponse.swift in Sources */,
 				7EAF17C62C95ADE6009F63FC /* Title.swift in Sources */,
+				7EF7FDFB2CEC73E7000F9C1E /* HeaderCollectionView.swift in Sources */,
 				7EAF177B2C959355009F63FC /* AppDelegate.swift in Sources */,
 				7EAF17CD2C95D741009F63FC /* SearchResultCollectionViewCell.swift in Sources */,
 				7EAF17B22C95947F009F63FC /* DownloadViewController.swift in Sources */,

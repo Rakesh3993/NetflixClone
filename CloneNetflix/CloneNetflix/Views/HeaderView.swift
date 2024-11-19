@@ -7,40 +7,34 @@
 
 import UIKit
 
+protocol HeaderViewCollectionViewDelegate: AnyObject {
+    func headerCollectionViewItemDidTap(_ cell: HeaderView, viewModel: YoutubeModel)
+}
+
 class HeaderView: UIView {
     
     var titleArray: [Title] = [Title]()
+    var timer: Timer?
+    var currentItem: Int = 0
+    weak var delegate: HeaderViewCollectionViewDelegate?
     
-    private var posterImageView: UIImageView = {
-       let image = UIImageView()
-        return image
-    }()
-    
-    private var downloadButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Download", for: .normal)
-        button.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
-        button.tintColor = .white
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        return button
-    }()
-    
-    private var playButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Play", for: .normal)
-        button.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
-        button.tintColor = .white
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        return button
+    var headerCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 50, height: 450)
+        layout.scrollDirection = .horizontal
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(HeaderCollectionView.self, forCellWithReuseIdentifier: HeaderCollectionView.identifier)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.showsHorizontalScrollIndicator = false
+        collection.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        return collection
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        [posterImageView, downloadButton, playButton].forEach(addSubview)
+        [headerCollectionView].forEach(addSubview)
+        headerCollectionView.delegate = self
+        headerCollectionView.dataSource = self
         contraints()
     }
     
@@ -48,27 +42,61 @@ class HeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        posterImageView.frame = bounds
-    }
-    
     private func contraints(){
         NSLayoutConstraint.activate([
-            downloadButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
-            downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30),
-            downloadButton.heightAnchor.constraint(equalToConstant: 40),
-            downloadButton.widthAnchor.constraint(equalToConstant: 120),
-            
-            playButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-            playButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30),
-            playButton.heightAnchor.constraint(equalToConstant: 40),
-            playButton.widthAnchor.constraint(equalToConstant: 120)
+            headerCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            headerCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            headerCollectionView.topAnchor.constraint(equalTo: topAnchor),
+            headerCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
     
-    func configure(with model: TitleModel){
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.imageString)") else {return}
-        posterImageView.sd_setImage(with: url)
+    func autoScroll() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(startTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func startTimer(){
+        guard !titleArray.isEmpty else {return}
+        let totalItem = titleArray.count
+        let indexPath = IndexPath(item: currentItem, section: 0)
+        headerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        currentItem += 1
+        if currentItem >= totalItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.headerCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
+                self.currentItem = 0
+            }
+        }
+    }
+}
+
+extension HeaderView: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return titleArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCollectionView.identifier, for: indexPath) as? HeaderCollectionView else {
+            return UICollectionViewCell()
+        }
+        let data = titleArray[indexPath.row]
+        cell.configure(with: data.poster_path)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let title = titleArray[indexPath.row]
+        let titleQuery = title.original_title
+        
+        APICaller.shared.getMovies(query: titleQuery+"trailer") { result in
+            switch result {
+            case .success(let data):
+                let youtubeModel = YoutubeModel(title: title.original_title, overview: title.overview, youtubeLink: data.id.videoId)
+                self.delegate?.headerCollectionViewItemDidTap(self, viewModel: youtubeModel)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
